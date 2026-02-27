@@ -1,0 +1,14 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-27T12:59:14.955Z",
+  "summary": "The diff modifies App.tsx to implement hash-based routing for the admin panel. The implementation checks window.location.hash for '#/admin' patterns and updates hashchange/popstate event listeners accordingly, which aligns with REQ-31's requirements. The caffeineAdminToken hash parameter passthrough is preserved since the detection only triggers on '#/admin' prefix, not arbitrary hash parameters.",
+  "missing_requirements": [],
+  "hallucinated_features": [],
+  "confidence": 0.95,
+  "changed_files": [
+    "frontend-file-summaries.txt",
+    "frontend/src/App.tsx",
+    "project_state.json"
+  ]
+}

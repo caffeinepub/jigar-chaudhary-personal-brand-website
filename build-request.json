@@ -1,0 +1,44 @@
+{
+  "kind": "build_request",
+  "title": "Fix Admin Panel routing for hash-based SPA navigation",
+  "projectName": "Jigar Chaudhary",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-31",
+      "text": "Fix the Admin Panel routing in App.tsx so it is accessible via the hash-based URL pattern used by the deployed site (e.g. /#/admin or /#admin). The current routing logic must be updated to detect the /admin path within the URL hash (window.location.hash) rather than relying on window.location.pathname, since the deployed ICP canister serves the SPA via hash routing. The admin panel at https://jigarchaudhary-tyf.caffeine.xyz/#caffeineAdminToken=... must remain accessible, and navigating to /#/admin (or the equivalent hash-based path) must render the AdminPanel component.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "this is my url for website, website is working fentastic but admin pannel is not working",
+          "Admin panel at /admin not accessible on deployed site — site uses hash-based routing, admin route needs to be /#/admin or similar hash-based path"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Navigating to https://jigarchaudhary-tyf.caffeine.xyz/#/admin renders the AdminPanel component instead of the main site",
+        "The main public site continues to load correctly at the root URL",
+        "The existing hash-change and popstate event listeners in App.tsx are updated to check for the /admin segment within the hash",
+        "The AdminPanel is able to fetch and display booking submissions from the backend getAllSubmissions() method once the routing is fixed",
+        "A direct link to /#/admin opens the admin panel without a blank screen or redirect to the home page"
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not change the backend Motoko actor or any backend logic",
+    "Do not modify any files listed in frontend.immutablePaths",
+    "Preserve the existing caffeineAdminToken hash parameter passthrough — it must not interfere with admin panel detection"
+  ],
+  "nonGoals": [
+    "Adding authentication or login protection to the admin panel",
+    "Changing the admin panel UI or table columns",
+    "Migrating from hash-based routing to a full React Router DOM path-based setup",
+    "Any changes to the public-facing sections of the site"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

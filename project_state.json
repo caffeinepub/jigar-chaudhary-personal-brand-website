@@ -1,0 +1,415 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 13,
+  "summary": "Premium personal brand website for Jigar Chaudhary — Youth Trainer, Experiential Facilitator, and Motivational Speaker. Built as a React SPA with Tailwind CSS, Framer Motion, and Lucide React. Dark theme (#0A0A0A-#1A1A1A) with dark blue accent sections, electric orange (#FF6B00) and gold (#F5A623) accents, Bebas Neue + Inter typography. Includes 10+ sections: Navigation, Hero, About, Signature Programs, Corporate Workshops, Educational Institutions, Testimonials, Media & Certifications, CTA Banner, Contact, and Footer. Contact details: phone 6351622776, email jigarchaudhary2005@gmail.com. Social links: Instagram @the_jigara, YouTube @the_jigara, LinkedIn profile wired up.",
+  "architectural_notes": [
+    "React SPA with Tailwind CSS, Framer Motion for animations, Lucide React for icons",
+    "Dark palette: #0A0A0A, #111111, #1A1A1A backgrounds; accent #FF6B00 (orange), #F5A623 (gold)",
+    "Typography: Bebas Neue (headings via Google Fonts), Inter (body)",
+    "Animations: fade-in on scroll, counter animation for stats, hover lift+glow on cards, sticky nav background change on scroll",
+    "Mobile-responsive with hamburger menu",
+    "Real social links: Instagram https://www.instagram.com/the_jigara, YouTube https://youtube.com/@the_jigara, LinkedIn https://www.linkedin.com/in/jigar-chaudhary-8573ab251",
+    "Contact: phone 6351622776, email jigarchaudhary2005@gmail.com",
+    "Backend required for contact form submissions storage and admin panel to view booking inquiries",
+    "Site uses hash-based routing (#) — admin panel must be accessible via hash route e.g. /#/admin rather than /admin"
+  ],
+  "known_issues": [
+    "Contact form is currently frontend-only — submissions are not saved or forwarded anywhere",
+    "Admin panel at /admin not accessible on deployed site — site uses hash-based routing, admin route needs to be /#/admin or similar hash-based path"
+  ],
+  "isFixRequest": true,
+  "existing_features": [
+    {
+      "id": "feature-set-up-the-react-spa-with-google-fonts-bebas-neue-for-headings-inter-for-body-loaded-via-import-in-the-global-css-tailwind-configured-with-custom-colors-0a0a0a-111111-1a1a1a-backgrounds-ff6b00-orange-f5a623-gold-and-install-configure-framer-motion-and-lucide-react-establish-a-consistent-dark-theme-across-the-entire-application",
+      "title": "Set up the React SPA with Google Fonts ('Bebas Neue' for headings, 'Inter' for body) loaded via @import in the global CSS, Tailwind configured with custom colors (#0A0A0A, #111111, #1A1A1A backgrounds; #FF6B00 orange; #F5A623 gold), and install/configure Framer Motion and lucide-react. Establish a consistent dark theme across the entire application.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-sticky-top-navigation-bar-with-jigar-s-name-logo-on-the-left-nav-links-about-programs-corporate-testimonials-contact-in-the-center-right-and-a-book-now-cta-button-in-electric-orange-ff6b00-on-the-far-right-the-nav-background-should-be-transparent-initially-and-switch-to-a-dark-opaque-background-0a0a0a-with-shadow-on-scroll-include-a-hamburger-menu-for-mobile-viewports-that-reveals-a-full-screen-or-slide-down-menu",
+      "title": "Build a sticky top navigation bar with Jigar's name/logo on the left, nav links (About, Programs, Corporate, Testimonials, Contact) in the center/right, and a 'Book Now' CTA button in electric orange (#FF6B00) on the far right. The nav background should be transparent initially and switch to a dark opaque background (#0A0A0A with shadow) on scroll. Include a hamburger menu for mobile viewports that reveals a full-screen or slide-down menu.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-full-screen-hero-section-with-a-dark-background-featuring-a-subtle-gradient-or-texture-overlay-display-a-massive-bold-headline-ignite-grow-lead-in-bebas-neue-sub-headline-india-s-boldest-youth-trainer-experiential-facilitator-and-supporting-text-130-sessions-50-colleges-real-transformations-include-two-cta-buttons-book-jigar-now-primary-orange-fill-and-explore-programs-secondary-outlined-in-orange-below-the-ctas-animate-stat-counters-on-load-for-130-sessions-50-colleges-5000-youth-impacted-10-states-add-a-subtle-scroll-down-indicator-at-the-bottom-of-the-section",
+      "title": "Build a full-screen Hero section with a dark background featuring a subtle gradient or texture overlay. Display a massive bold headline 'Ignite. Grow. Lead.' in Bebas Neue, sub-headline 'India's Boldest Youth Trainer & Experiential Facilitator', and supporting text '130+ Sessions | 50+ Colleges | Real Transformations'. Include two CTA buttons: 'Book Jigar Now' (primary, orange fill) and 'Explore Programs' (secondary, outlined in orange). Below the CTAs, animate stat counters on load for: 130+ Sessions, 50+ Colleges, 5000+ Youth Impacted, 10+ States. Add a subtle scroll-down indicator at the bottom of the section.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-an-about-section-with-the-title-who-is-jigar-left-side-a-large-profile-image-placeholder-with-an-energetic-orange-gold-gradient-border-frame-right-side-bold-bio-text-jigar-chaudhary-is-one-of-india-s-youngest-experiential-facilitators-a-youth-trainer-motivational-speaker-and-workshop-designer-who-believes-learning-must-be-felt-not-just-heard-and-with-130-sessions-conducted-across-colleges-universities-and-institutions-jigar-has-impacted-thousands-of-young-minds-through-immersive-high-energy-experiences-below-the-bio-display-achievement-badge-cards-130-sessions-5000-youth-impacted-50-colleges-10-states-5-signature-programs-include-a-certifications-row-mentioning-youth-leadership-certified-trainer-nlp-practitioner-certified-experiential-facilitator-fade-the-section-in-on-scroll",
+      "title": "Build an About section with the title 'Who is Jigar?'. Left side: a large profile image placeholder with an energetic orange/gold gradient border frame. Right side: bold bio text — 'Jigar Chaudhary is one of India's youngest experiential facilitators — a Youth Trainer, Motivational Speaker, and Workshop Designer who believes learning must be felt, not just heard.' and 'With 130+ sessions conducted across colleges, universities, and institutions, Jigar has impacted thousands of young minds through immersive, high-energy experiences.' Below the bio, display achievement badge cards: 130+ Sessions, 5000+ Youth Impacted, 50+ Colleges, 10+ States, 5+ Signature Programs. Include a certifications row mentioning: Youth Leadership Certified Trainer, NLP Practitioner, Certified Experiential Facilitator. Fade the section in on scroll.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-signature-programs-section-with-title-signature-programs-display-5-program-cards-in-a-2-column-or-3-column-grid-responsive-with-hover-animation-lift-orange-glow-1-revive-rediscover-your-energy-purpose-and-drive-a-high-impact-session-for-youth-who-feel-stuck-2-master-your-circle-the-power-of-your-relationships-defines-your-future-learn-to-build-protect-and-grow-your-circle-3-youth-bootcamps-full-day-immersive-experiences-designed-to-push-limits-build-confidence-and-create-breakthroughs-4-career-clarity-workshops-confused-about-your-path-this-workshop-brings-clarity-direction-and-a-roadmap-to-your-future-5-stress-management-sessions-modern-tools-and-mindset-shifts-to-help-youth-manage-pressure-anxiety-and-overwhelm-each-card-includes-program-name-in-bebas-neue-short-description-a-relevant-lucide-react-icon-and-a-register-now-cta-button-in-orange",
+      "title": "Build a Signature Programs section with title 'Signature Programs'. Display 5 program cards in a 2-column or 3-column grid (responsive) with hover animation (lift + orange glow): 1) REVIVE — 'Rediscover your energy, purpose and drive. A high-impact session for youth who feel stuck.' 2) Master Your Circle — 'The power of your relationships defines your future. Learn to build, protect and grow your circle.' 3) Youth Bootcamps — 'Full-day immersive experiences designed to push limits, build confidence and create breakthroughs.' 4) Career Clarity Workshops — 'Confused about your path? This workshop brings clarity, direction and a roadmap to your future.' 5) Stress Management Sessions — 'Modern tools and mindset shifts to help youth manage pressure, anxiety and overwhelm.' Each card includes: program name in Bebas Neue, short description, a relevant lucide-react icon, and a 'Register Now' CTA button in orange.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-corporate-workshops-section-with-title-corporate-workshops-display-a-dark-card-with-orange-accents-containing-the-description-bring-jigar-s-energy-and-expertise-to-your-team-corporate-sessions-designed-for-leadership-communication-team-dynamics-and-high-performance-mindset-list-workshop-topics-with-bullet-icon-markers-team-dynamics-collaboration-leadership-for-young-professionals-communication-influence-stress-burnout-management-high-performance-mindset-include-a-prominent-cta-button-request-a-custom-workshop-in-orange",
+      "title": "Build a Corporate Workshops section with title 'Corporate Workshops'. Display a dark card with orange accents containing the description: 'Bring Jigar's energy and expertise to your team. Corporate sessions designed for leadership, communication, team dynamics, and high-performance mindset.' List workshop topics with bullet/icon markers: Team Dynamics & Collaboration, Leadership for Young Professionals, Communication & Influence, Stress & Burnout Management, High-Performance Mindset. Include a prominent CTA button: 'Request a Custom Workshop' in orange.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-testimonials-section-with-title-what-people-say-display-4-testimonial-cards-each-containing-a-5-star-rating-gold-stars-a-quote-and-the-person-s-name-role-and-institution-cards-1-jigar-s-session-on-revive-completely-changed-how-our-students-approach-their-goals-prof-meera-patel-hod-gls-university-2-his-youth-bootcamp-was-a-turning-point-for-our-placement-batch-ravi-shah-training-head-mica-3-the-stress-management-session-jigar-conducted-for-our-team-was-incredibly-impactful-anita-desai-hr-manager-techcorp-india-4-jigar-has-a-rare-gift-he-doesn-t-just-speak-he-transforms-the-room-dr-kunal-mehta-principal-pdpu-apply-fade-in-on-scroll-animation",
+      "title": "Build a Testimonials section with title 'What People Say'. Display 4 testimonial cards, each containing: a 5-star rating (gold stars), a quote, and the person's name, role, and institution. Cards: 1) 'Jigar's session on REVIVE completely changed how our students approach their goals...' — Prof. Meera Patel, HOD, GLS University. 2) 'His Youth Bootcamp was a turning point for our placement batch...' — Ravi Shah, Training Head, MICA. 3) 'The stress management session Jigar conducted for our team was incredibly impactful...' — Anita Desai, HR Manager, TechCorp India. 4) 'Jigar has a rare gift — he doesn't just speak, he transforms the room...' — Dr. Kunal Mehta, Principal, PDPU. Apply fade-in on scroll animation.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-media-certifications-section-with-title-media-certifications-include-a-row-of-5-6-stylized-media-press-logo-placeholder-boxes-outlined-rectangles-with-media-feature-label-a-row-of-4-certification-cards-youth-leadership-certified-trainer-nlp-practitioner-certified-experiential-facilitator-public-speaking-excellence-award-each-with-a-relevant-lucide-react-icon-and-gold-accent-a-gallery-grid-of-6-event-photo-placeholders-dark-cards-with-a-camera-icon-and-event-photo-label",
+      "title": "Build a Media & Certifications section with title 'Media & Certifications'. Include: a row of 5–6 stylized media/press logo placeholder boxes (outlined rectangles with 'Media Feature' label). A row of 4 certification cards: Youth Leadership Certified Trainer, NLP Practitioner, Certified Experiential Facilitator, Public Speaking Excellence Award — each with a relevant lucide-react icon and gold accent. A gallery grid of 6 event photo placeholders (dark cards with a camera icon and 'Event Photo' label).",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-full-width-cta-banner-section-with-a-dark-background-and-electric-orange-text-accents-display-headline-ready-to-transform-your-audience-in-large-bebas-neue-sub-text-whether-it-s-a-college-event-corporate-workshop-or-a-large-scale-youth-conference-jigar-is-ready-to-deliver-an-unforgettable-experience-include-two-buttons-book-jigar-now-orange-fill-and-whatsapp-us-green-with-a-whatsapp-message-icon-apply-a-framer-motion-entrance-animation",
+      "title": "Build a full-width CTA Banner section with a dark background and electric orange text/accents. Display headline 'Ready to Transform Your Audience?' in large Bebas Neue, sub-text 'Whether it's a college event, corporate workshop, or a large-scale youth conference — Jigar is ready to deliver an unforgettable experience.' Include two buttons: 'Book Jigar Now' (orange fill) and 'WhatsApp Us' (green, with a WhatsApp/message icon). Apply a Framer Motion entrance animation.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-contact-section-with-title-get-in-touch-left-side-a-contact-form-with-fields-name-text-email-email-phone-tel-organization-text-type-of-event-dropdown-college-event-corporate-workshop-youth-bootcamp-speaking-engagement-other-message-textarea-and-a-submit-button-in-orange-right-side-a-large-green-whatsapp-button-an-email-display-e-g-jigar-example-com-location-text-based-in-ahmedabad-available-pan-india-and-social-icon-links-for-instagram-linkedin-and-youtube-using-lucide-react-icons",
+      "title": "Build a Contact section with title 'Get in Touch'. Left side: a contact form with fields — Name (text), Email (email), Phone (tel), Organization (text), Type of Event (dropdown: College Event, Corporate Workshop, Youth Bootcamp, Speaking Engagement, Other), Message (textarea), and a Submit button in orange. Right side: a large green WhatsApp button, an email display (e.g., jigar@example.com), location text 'Based in Ahmedabad, Available Pan-India', and social icon links for Instagram, LinkedIn, and YouTube using lucide-react icons.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-dark-minimal-footer-with-jigar-s-logo-name-on-the-left-with-tagline-ignite-grow-lead-quick-links-about-programs-corporate-testimonials-contact-social-media-icons-for-instagram-linkedin-youtube-and-copyright-text-2025-jigar-chaudhary-all-rights-reserved",
+      "title": "Build a dark minimal footer with: Jigar's logo/name on the left with tagline 'Ignite. Grow. Lead.', quick links (About, Programs, Corporate, Testimonials, Contact), social media icons for Instagram, LinkedIn, YouTube, and copyright text '© 2025 Jigar Chaudhary. All Rights Reserved.'",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-smooth-scroll-behavior-css-scroll-behavior-smooth-framer-motion-fade-in-animations-for-all-sections-using-intersection-observer-or-framer-motion-s-whileinview-counter-animations-for-stats-in-both-the-hero-and-about-sections-hover-effects-on-program-cards-translatey-lift-orange-box-shadow-glow-and-ensure-full-mobile-responsiveness-across-all-sections",
+      "title": "Implement smooth scroll behavior (CSS scroll-behavior: smooth), Framer Motion fade-in animations for all sections using Intersection Observer or Framer Motion's whileInView, counter animations for stats in both the Hero and About sections, hover effects on program cards (translateY lift + orange box-shadow glow), and ensure full mobile responsiveness across all sections.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-premium-high-contrast-dark-visual-theme-consistently-across-all-sections-backgrounds-use-0a0a0a-111111-1a1a1a-primary-accent-is-ff6b00-orange-highlight-accent-is-f5a623-gold-headings-use-bebas-neue-body-text-uses-inter-ensure-generous-whitespace-high-readability-and-a-high-ticket-personal-brand-aesthetic-energetic-but-never-cluttered",
+      "title": "Apply a premium, high-contrast dark visual theme consistently across all sections: backgrounds use #0A0A0A, #111111, #1A1A1A; primary accent is #FF6B00 (orange); highlight accent is #F5A623 (gold); headings use Bebas Neue; body text uses Inter. Ensure generous whitespace, high readability, and a high-ticket personal brand aesthetic — energetic but never cluttered.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-hero-section-background-visual-with-an-uploaded-action-photo-of-jigar-speaking-on-stage-use-img-20250315-wa0055-removebg-preview-png-jigar-holding-mic-transparent-background-as-the-primary-hero-foreground-figure-placed-over-a-dark-gradient-background-or-use-img-20250315-wa0050-jpg-img-20250315-wa0055-jpg-as-a-full-bleed-dark-overlaid-hero-background-the-image-must-be-served-from-frontend-public-assets-generated",
+      "title": "Replace the Hero section background/visual with an uploaded action photo of Jigar speaking on stage. Use IMG-20250315-WA0055-removebg-preview.png (Jigar holding mic, transparent background) as the primary hero foreground figure placed over a dark gradient background, or use IMG-20250315-WA0050.jpg / IMG-20250315-WA0055.jpg as a full-bleed dark-overlaid hero background. The image must be served from frontend/public/assets/generated/.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-about-section-profile-image-placeholder-with-jigara2-removebg-preview-png-jigar-speaking-with-mic-transparent-background-framed-with-the-existing-orange-gold-gradient-border-the-image-file-must-be-placed-at-frontend-public-assets-generated",
+      "title": "Replace the About section profile image placeholder with jigara2-removebg-preview.png (Jigar speaking with mic, transparent background) framed with the existing orange/gold gradient border. The image file must be placed at frontend/public/assets/generated/.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-populate-the-event-photo-gallery-grid-in-the-media-certifications-section-and-any-gallery-section-with-a-curated-selection-of-the-uploaded-workshop-event-photos-use-the-following-images-from-frontend-public-assets-generated-ws16-jpeg-silver-oak-hope-session-ws14-jpeg-balloon-activity-bootcamp-ws9-jpeg-large-classroom-selfie-ws11-jpeg-heartfulness-session-with-students-shark-teens-cp-jpg-shark-teens-auditorium-event-ws18-jpeg-national-education-conclave-2025-stage-ws22-jpeg-presentation-with-projector-ws19-jpeg-teacher-circle-session-replace-all-placeholder-event-photo-cards-with-these-real-photos-displayed-in-a-responsive-masonry-or-grid-layout",
+      "title": "Populate the event photo gallery grid in the Media & Certifications section (and any gallery section) with a curated selection of the uploaded workshop/event photos. Use the following images from frontend/public/assets/generated/: ws16.jpeg (Silver Oak HOPE session), ws14.jpeg (balloon activity bootcamp), ws9.jpeg (large classroom selfie), ws11.jpeg (Heartfulness session with students), shark-teens-cp.jpg (Shark Teens auditorium event), ws18.jpeg (National Education Conclave 2025 stage), ws22.jpeg (presentation with projector), ws19.jpeg (teacher circle session). Replace all placeholder 'Event Photo' cards with these real photos displayed in a responsive masonry or grid layout.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-all-social-media-icon-links-across-the-entire-site-navigation-contact-section-footer-to-use-the-following-real-urls-instagram-https-www-instagram-com-the-jigara-igsh-mthky2v3andqbhjkba-youtube-https-youtube-com-the-jigara-si-tbpbh5u-wpsy-1hs-linkedin-https-www-linkedin-com-in-jigar-chaudhary-8573ab251-utm-source-share-utm-campaign-share-via-utm-content-profile-utm-medium-android-app-all-links-must-open-in-a-new-tab",
+      "title": "Update all social media icon links across the entire site (Navigation, Contact section, Footer) to use the following real URLs: Instagram — https://www.instagram.com/the_jigara?igsh=MThkY2V3andqbHJkbA==, YouTube — https://youtube.com/@the_jigara?si=TbPBh5u_wpsy-1hS, LinkedIn — https://www.linkedin.com/in/jigar-chaudhary-8573ab251?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app. All links must open in a new tab.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-in-the-event-gallery-section-mediacertifications-tsx-include-all-available-workshop-event-images-from-frontend-public-assets-generated-not-just-the-8-previously-listed-add-any-remaining-images-beyond-ws16-jpeg-ws14-jpeg-ws9-jpeg-ws11-jpeg-shark-teens-cp-jpg-ws18-jpeg-ws22-jpeg-ws19-jpeg-that-exist-in-that-directory-e-g-ws1-jpeg-through-ws22-jpeg-and-any-other-event-photos-present-display-all-photos-in-a-responsive-masonry-or-uniform-grid-layout-with-hover-overlays-showing-captions",
+      "title": "In the Event Gallery section (MediaCertifications.tsx), include ALL available workshop/event images from frontend/public/assets/generated/ — not just the 8 previously listed. Add any remaining images beyond ws16.jpeg, ws14.jpeg, ws9.jpeg, ws11.jpeg, shark-teens-cp.jpg, ws18.jpeg, ws22.jpeg, ws19.jpeg that exist in that directory (e.g. ws1.jpeg through ws22.jpeg and any other event photos present). Display all photos in a responsive masonry or uniform grid layout with hover overlays showing captions.",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-in-the-corporate-workshops-section-corporate-tsx-remove-any-text-that-reads-50-corporate-or-similar-stat-badge-referencing-a-corporate-count-the-section-should-not-display-this-statistic-anywhere",
+      "title": "In the Corporate Workshops section (Corporate.tsx), remove any text that reads '50+ Corporate' or similar stat/badge referencing a corporate count. The section should not display this statistic anywhere.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-in-the-testimonials-section-testimonials-tsx-remove-the-designation-role-text-from-each-testimonial-card-each-card-should-show-only-the-person-s-name-and-institution-e-g-prof-meera-patel-gls-university-without-the-role-label-e-g-hod-training-head-hr-manager-principal",
+      "title": "In the Testimonials section (Testimonials.tsx), remove the designation/role text from each testimonial card. Each card should show only the person's name and institution (e.g. 'Prof. Meera Patel, GLS University'), without the role label (e.g. 'HOD', 'Training Head', 'HR Manager', 'Principal').",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-in-the-about-section-about-tsx-swap-the-primary-displayed-profile-image-currently-the-section-uses-jigara2-removebg-preview-png-replace-it-with-img-20250315-wa0055-removebg-preview-png-jigar-holding-mic-transparent-background-as-the-first-primary-image-shown-in-the-orange-gold-gradient-border-frame-use-jigara2-removebg-preview-png-as-a-secondary-decorative-image-or-background-accent-if-the-layout-supports-two-images-otherwise-simply-replace-the-main-image-slot-both-files-are-located-at-frontend-public-assets-generated-choose-whichever-arrangement-best-showcases-jigar-s-on-stage-presence",
+      "title": "In the About section (About.tsx), swap the primary displayed profile image. Currently the section uses jigara2-removebg-preview.png. Replace it with IMG-20250315-WA0055-removebg-preview.png (Jigar holding mic, transparent background) as the first/primary image shown in the orange/gold gradient border frame. Use jigara2-removebg-preview.png as a secondary decorative image or background accent if the layout supports two images, otherwise simply replace the main image slot. Both files are located at frontend/public/assets/generated/. Choose whichever arrangement best showcases Jigar's on-stage presence.",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-contact-section-contact-tsx-to-wire-the-existing-form-s-submit-handler-to-call-the-backend-submitbooking-canister-method-via-the-useactor-hook-on-successful-submission-show-a-success-toast-message-your-booking-request-has-been-sent-on-error-show-an-error-message-disable-the-submit-button-while-the-call-is-in-flight",
+      "title": "Update the Contact section (Contact.tsx) to wire the existing form's submit handler to call the backend submitBooking canister method via the useActor hook. On successful submission, show a success toast/message ('Your booking request has been sent!'). On error, show an error message. Disable the submit button while the call is in flight.",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-an-admin-panel-page-accessible-at-the-route-admin-add-it-to-app-tsx-using-react-router-or-a-simple-conditional-render-based-on-the-url-hash-the-admin-panel-must-display-a-table-of-all-booking-submissions-fetched-from-the-backend-getallsubmissions-method-showing-columns-name-email-phone-organization-event-type-message-date-time-and-a-delete-action-button-include-a-refresh-button-to-re-fetch-the-page-must-be-styled-consistently-with-the-site-s-dark-theme-111111-background-orange-accents-inter-font-no-authentication-is-required-for-this-initial-version",
+      "title": "Build an Admin Panel page accessible at the route /admin (add it to App.tsx using React Router or a simple conditional render based on the URL hash). The admin panel must display a table of all booking submissions fetched from the backend getAllSubmissions() method, showing columns: #, Name, Email, Phone, Organization, Event Type, Message, Date/Time, and a Delete action button. Include a 'Refresh' button to re-fetch. The page must be styled consistently with the site's dark theme (#111111 background, orange accents, Inter font). No authentication is required for this initial version.",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-in-hero-tsx-replace-the-current-first-primary-hero-image-with-the-newly-uploaded-ws4-1-jpeg-file-save-it-as-ws4-jpeg-in-frontend-public-assets-generated-and-update-the-img-src-reference-accordingly",
+      "title": "In Hero.tsx, replace the current first/primary hero image with the newly uploaded ws4-1.jpeg file. Save it as ws4.jpeg in frontend/public/assets/generated/ and update the <img> src reference accordingly.",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-in-about-tsx-replace-the-current-profile-image-in-the-who-is-jigar-section-with-the-newly-uploaded-ws9-1-jpeg-file-save-it-as-ws9-about-jpeg-in-frontend-public-assets-generated-and-update-the-img-src-reference-the-image-must-remain-inside-the-existing-orange-gold-gradient-border-frame",
+      "title": "In About.tsx, replace the current profile image in the 'Who is Jigar?' section with the newly uploaded ws9-1.jpeg file. Save it as ws9-about.jpeg in frontend/public/assets/generated/ and update the <img> src reference. The image must remain inside the existing orange/gold gradient border frame.",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-in-testimonials-tsx-remove-the-name-tag-person-s-name-and-company-institution-tag-from-every-testimonial-card-each-card-should-display-only-the-quote-and-the-5-star-rating-no-attribution-text-of-any-kind-until-re-added-later",
+      "title": "In Testimonials.tsx, remove the name tag (person's name) and company/institution tag from every testimonial card. Each card should display only the quote and the 5-star rating — no attribution text of any kind until re-added later.",
+      "reqIds": [
+        "REQ-27"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-in-mediacertifications-tsx-make-every-event-gallery-image-clickable-when-a-user-clicks-any-gallery-image-open-a-full-screen-lightbox-modal-overlay-that-displays-the-full-size-version-of-that-image-the-lightbox-must-have-a-close-button-x-icon-and-support-closing-by-clicking-the-overlay-background-or-pressing-escape-navigation-arrows-to-go-to-previous-next-image-in-the-gallery-are-a-bonus-but-not-required",
+      "title": "In MediaCertifications.tsx, make every event gallery image clickable. When a user clicks any gallery image, open a full-screen lightbox/modal overlay that displays the full-size version of that image. The lightbox must have a close button (X icon) and support closing by clicking the overlay background or pressing Escape. Navigation arrows to go to previous/next image in the gallery are a bonus but not required.",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-section-immediately-following-the-event-gallery-in-mediacertifications-tsx-or-whichever-section-comes-after-it-likely-the-cta-banner-or-a-divider-the-large-decorative-transform-word-is-visually-dominating-and-making-the-section-unclear-reduce-its-size-significantly-lower-its-opacity-so-it-reads-as-a-subtle-background-watermark-rather-than-foreground-text-or-remove-it-entirely-if-it-detracts-from-readability-ensure-the-section-heading-body-text-and-cta-buttons-are-clearly-legible-and-visually-prominent",
+      "title": "Fix the section immediately following the Event Gallery in MediaCertifications.tsx (or whichever section comes after it — likely the CTA Banner or a divider). The large decorative 'TRANSFORM' word is visually dominating and making the section unclear. Reduce its size significantly, lower its opacity so it reads as a subtle background watermark rather than foreground text, or remove it entirely if it detracts from readability. Ensure the section heading, body text, and CTA buttons are clearly legible and visually prominent.",
+      "reqIds": [
+        "REQ-29"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-in-hero-tsx-highlight-the-name-jigar-chaudhary-wherever-it-appears-in-the-hero-section-sub-headline-badge-or-supporting-text-by-applying-the-primary-orange-accent-color-ff6b00-or-gold-accent-f5a623-wrap-the-name-in-a-styled-span-with-the-accent-color-so-it-visually-stands-out-from-surrounding-white-gray-text",
+      "title": "In Hero.tsx, highlight the name 'Jigar Chaudhary' wherever it appears in the Hero section (sub-headline, badge, or supporting text) by applying the primary orange accent color (#FF6B00) or gold accent (#F5A623). Wrap the name in a styled <span> with the accent color so it visually stands out from surrounding white/gray text.",
+      "reqIds": [
+        "REQ-30"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-admin-panel-routing-in-app-tsx-so-it-is-accessible-via-the-hash-based-url-pattern-used-by-the-deployed-site-e-g-admin-or-admin-the-current-routing-logic-must-be-updated-to-detect-the-admin-path-within-the-url-hash-window-location-hash-rather-than-relying-on-window-location-pathname-since-the-deployed-icp-canister-serves-the-spa-via-hash-routing-the-admin-panel-at-https-jigarchaudhary-tyf-caffeine-xyz-caffeineadmintoken-must-remain-accessible-and-navigating-to-admin-or-the-equivalent-hash-based-path-must-render-the-adminpanel-component",
+      "title": "Fix the Admin Panel routing in App.tsx so it is accessible via the hash-based URL pattern used by the deployed site (e.g. /#/admin or /#admin). The current routing logic must be updated to detect the /admin path within the URL hash (window.location.hash) rather than relying on window.location.pathname, since the deployed ICP canister serves the SPA via hash routing. The admin panel at https://jigarchaudhary-tyf.caffeine.xyz/#caffeineAdminToken=... must remain accessible, and navigating to /#/admin (or the equivalent hash-based path) must render the AdminPanel component.",
+      "reqIds": [
+        "REQ-31"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Sticky navigation with logo, nav links, and Book Now CTA button",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Full-screen Hero section with animated stats counters, dual CTAs, and scroll indicator",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "About section with bio, profile placeholder, and achievement badges",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Signature Programs section with 5 program cards, icons, hover animations, and Register Now buttons",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Corporate Workshops section with topic list and Request a Custom Workshop CTA",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Testimonials section with 4 testimonial cards including star ratings",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Media & Certifications section with logo placeholders, certification cards, and event photo gallery grid",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Full-width CTA Banner with Book Now and WhatsApp Us buttons",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Contact section with form (event type dropdown) and WhatsApp/social links on the right",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Dark minimal footer with logo, tagline, quick links, social icons, and copyright",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Add Educational Institutions section (dark blue theme)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Wire up real social links: Instagram https://www.instagram.com/the_jigara, YouTube https://youtube.com/@the_jigara, LinkedIn https://www.linkedin.com/in/jigar-chaudhary-8573ab251",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Use all remaining images in the Event gallery section",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Remove '50+ corporate' text from the Corporate Workshops section",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "Remove designation text from testimonial/feedback cards",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Swap 1st and 2nd images in the 'Who is Jigar' About section using best available photos",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-17",
+      "summary": "Add backend system to save contact form submissions and build an admin panel to view all booking inquiries (name, email, phone, organization, event type, message)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-18",
+      "summary": "Create a Motoko backend actor with stable storage for contact/booking form submissions. Each submission must store: name (Text), email (Text), phone (Text), organization (Text), eventType (Text), message (Text), and a timestamp (Int). Expose the following public functions: submitBooking(name, email, phone, organization, eventType, message) -> async Result, getAllSubmissions() -> async [Submission], and deleteSubmission(id: Nat) -> async Result.",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-19",
+      "summary": "Replace Hero section 1st image with ws4.jpeg",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-20",
+      "summary": "Replace 'Who is Jigar' About section image with ws9.jpeg",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-21",
+      "summary": "Remove name tag and company tag from all testimonial/feedback cards",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-22",
+      "summary": "Make event gallery images clickable to open full-size lightbox/viewer",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-23",
+      "summary": "Fix section after event gallery that looks unclear due to large 'TRANSFORM' word — improve readability/clarity",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-24",
+      "summary": "Highlight 'Jigar Chaudhary' name in the Hero/first section (e.g. orange/gold accent color)",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Jigar Chaudhary Personal Brand Website",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-fix-the-admin-panel-routing-in-app-tsx-so-it-is-accessible-via-the-hash-based-url-pattern-used-by-the-deployed-site-e-g-admin-or-admin-the-current-routing-logic-must-be-updated-to-detect-the-admin-path-within-the-url-hash-window-location-hash-rather-than-relying-on-window-location-pathname-since-the-deployed-icp-canister-serves-the-spa-via-hash-routing-the-admin-panel-at-https-jigarchaudhary-tyf-caffeine-xyz-caffeineadmintoken-must-remain-accessible-and-navigating-to-admin-or-the-equivalent-hash-based-path-must-render-the-adminpanel-component",
+      "featureTitle": "Fix the Admin Panel routing in App.tsx so it is accessible via the hash-based URL pattern used by the deployed site (e.g. /#/admin or /#admin). The current routing logic must be updated to detect the /admin path within the URL hash (window.location.hash) rather than relying on window.location.pathname, since the deployed ICP canister serves the SPA via hash routing. The admin panel at https://jigarchaudhary-tyf.caffeine.xyz/#caffeineAdminToken=... must remain accessible, and navigating to /#/admin (or the equivalent hash-based path) must render the AdminPanel component.",
+      "files": [
+        "frontend/src/App.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-31"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

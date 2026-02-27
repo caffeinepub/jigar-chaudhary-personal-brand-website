@@ -1,0 +1,25 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Fix Admin Panel routing for hash-based SPA navigation",
+  "requirements": [
+    {
+      "id": "REQ-31",
+      "summary": "Update App.tsx routing logic to detect /admin within the URL hash (window.location.hash) instead of pathname, enabling admin panel access via /#/admin on the deployed ICP canister",
+      "acceptanceCriteria": [
+        "Navigating to https://jigarchaudhary-tyf.caffeine.xyz/#/admin renders the AdminPanel component instead of the main site",
+        "The main public site continues to load correctly at the root URL",
+        "The existing hash-change and popstate event listeners in App.tsx are updated to check for the /admin segment within the hash",
+        "The AdminPanel is able to fetch and display booking submissions from the backend getAllSubmissions() method once the routing is fixed",
+        "A direct link to /#/admin opens the admin panel without a blank screen or redirect to the home page"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Update the routing detection logic to check for '/admin' within window.location.hash instead of window.location.pathname. Modify the hashchange and popstate event listeners to parse the hash value and extract the route segment. Preserve the existing caffeineAdminToken parameter passthrough logic. Ensure the component state updates correctly when the hash contains '/admin' to render the AdminPanel, and renders the full public site (Navigation + sections + Footer) otherwise."
+        }
+      ]
+    }
+  ]
+}
