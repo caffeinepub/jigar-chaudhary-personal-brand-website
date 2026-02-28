@@ -1,23 +1,39 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix Admin Panel routing for hash-based SPA navigation",
+  "title": "Fix admin panel permissions error when loading registrations",
   "requirements": [
     {
-      "id": "REQ-31",
-      "summary": "Update App.tsx routing logic to detect /admin within the URL hash (window.location.hash) instead of pathname, enabling admin panel access via /#/admin on the deployed ICP canister",
+      "id": "REQ-1",
+      "summary": "Fix the admin panel to correctly pass the authenticated identity to the backend actor when fetching bookings and session registrations, eliminating the 'account may not have admin permissions' error after successful Internet Identity login and password authentication.",
       "acceptanceCriteria": [
-        "Navigating to https://jigarchaudhary-tyf.caffeine.xyz/#/admin renders the AdminPanel component instead of the main site",
-        "The main public site continues to load correctly at the root URL",
-        "The existing hash-change and popstate event listeners in App.tsx are updated to check for the /admin segment within the hash",
-        "The AdminPanel is able to fetch and display booking submissions from the backend getAllSubmissions() method once the routing is fixed",
-        "A direct link to /#/admin opens the admin panel without a blank screen or redirect to the home page"
+        "After completing both authentication steps (Internet Identity + password), the admin panel successfully loads all bookings without showing a permissions error.",
+        "After completing both authentication steps, the admin panel successfully loads all session registrations without showing a permissions error.",
+        "The authenticated actor used for admin queries carries the logged-in Internet Identity principal, not an anonymous principal.",
+        "Retrying does not produce the permissions error once the user is fully authenticated.",
+        "The backend isAdmin check correctly recognises the authenticated caller's principal."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/App.tsx",
+          "path": "frontend/src/components/AdminPanel.tsx",
           "operation": "modify",
-          "description": "Update the routing detection logic to check for '/admin' within window.location.hash instead of window.location.pathname. Modify the hashchange and popstate event listeners to parse the hash value and extract the route segment. Preserve the existing caffeineAdminToken parameter passthrough logic. Ensure the component state updates correctly when the hash contains '/admin' to render the AdminPanel, and renders the full public site (Navigation + sections + Footer) otherwise."
+          "description": "Update the admin panel component to ensure that after successful Internet Identity login and password gate authentication, it waits for the authenticated actor to be fully ready before attempting to fetch bookings and registrations. Add conditional logic to prevent rendering admin data queries until both authentication steps are complete and the actor is authenticated. Ensure the component responds to actor state transitions by re-triggering queries when the actor changes from anonymous to authenticated."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Ensure the useQueries hooks for fetching bookings and registrations wait for the authenticated actor (not the anonymous actor) to be ready before executing the queries, and invalidate/refetch those queries when the actor transitions from anonymous to authenticated.",
+      "acceptanceCriteria": [
+        "Queries for admin data are disabled until the authenticated actor is available.",
+        "Once the actor becomes authenticated, the admin queries are automatically triggered without requiring a manual retry.",
+        "No permissions error is shown while the actor is still in its unauthenticated/transitional state."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Modify the useGetAllBookings and useGetAllRegistrations query hooks to add proper enabled conditions that check both actor availability and actor authentication state before executing queries. Ensure queries are disabled when the actor is null, still fetching, or when the actor is in an anonymous state. Add logic to automatically refetch these queries when the actor transitions from anonymous to authenticated, ensuring smooth re-execution without manual retry once the user completes both authentication steps."
         }
       ]
     }

@@ -1,41 +1,52 @@
 {
   "kind": "build_request",
-  "title": "Fix Admin Panel routing for hash-based SPA navigation",
-  "projectName": "Jigar Chaudhary",
+  "title": "Fix admin panel permissions error when loading registrations",
   "priority": "high",
   "requirements": [
     {
-      "id": "REQ-31",
-      "text": "Fix the Admin Panel routing in App.tsx so it is accessible via the hash-based URL pattern used by the deployed site (e.g. /#/admin or /#admin). The current routing logic must be updated to detect the /admin path within the URL hash (window.location.hash) rather than relying on window.location.pathname, since the deployed ICP canister serves the SPA via hash routing. The admin panel at https://jigarchaudhary-tyf.caffeine.xyz/#caffeineAdminToken=... must remain accessible, and navigating to /#/admin (or the equivalent hash-based path) must render the AdminPanel component.",
-      "target": "frontend",
+      "id": "REQ-1",
+      "text": "Fix the admin panel so that after successful Internet Identity login and password authentication, the authenticated identity is correctly passed to the backend actor when fetching bookings and session registrations, eliminating the 'account may not have admin permissions' error.",
+      "target": "both",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-1"
         ],
         "quotes": [
-          "this is my url for website, website is working fentastic but admin pannel is not working",
-          "Admin panel at /admin not accessible on deployed site — site uses hash-based routing, admin route needs to be /#/admin or similar hash-based path"
+          "Failed to load registrations. Your account may not have admin permissions yet. Please wait a moment and try again."
         ]
       },
       "acceptanceCriteria": [
-        "Navigating to https://jigarchaudhary-tyf.caffeine.xyz/#/admin renders the AdminPanel component instead of the main site",
-        "The main public site continues to load correctly at the root URL",
-        "The existing hash-change and popstate event listeners in App.tsx are updated to check for the /admin segment within the hash",
-        "The AdminPanel is able to fetch and display booking submissions from the backend getAllSubmissions() method once the routing is fixed",
-        "A direct link to /#/admin opens the admin panel without a blank screen or redirect to the home page"
+        "After completing both authentication steps (Internet Identity + password), the admin panel successfully loads all bookings without showing a permissions error.",
+        "After completing both authentication steps, the admin panel successfully loads all session registrations without showing a permissions error.",
+        "The authenticated actor used for admin queries carries the logged-in Internet Identity principal, not an anonymous principal.",
+        "Retrying does not produce the permissions error once the user is fully authenticated.",
+        "The backend isAdmin check correctly recognises the authenticated caller's principal."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Ensure the useQueries hooks for fetching bookings and registrations wait for the authenticated actor (not the anonymous actor) to be ready before executing the queries, and invalidate/refetch those queries when the actor transitions from anonymous to authenticated.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Queries for admin data are disabled until the authenticated actor is available.",
+        "Once the actor becomes authenticated, the admin queries are automatically triggered without requiring a manual retry.",
+        "No permissions error is shown while the actor is still in its unauthenticated/transitional state."
       ]
     }
   ],
   "constraints": [
-    "Do not change the backend Motoko actor or any backend logic",
-    "Do not modify any files listed in frontend.immutablePaths",
-    "Preserve the existing caffeineAdminToken hash parameter passthrough — it must not interfere with admin panel detection"
+    "Do not modify files under frontend/src/hooks/useInternetIdentity.ts or frontend/src/hooks/useActor.ts directly — propose logic changes only through safe alternatives (e.g., AdminPanel.tsx or useQueries.ts).",
+    "All Motoko logic must remain in the single backend/main.mo actor file."
   ],
   "nonGoals": [
-    "Adding authentication or login protection to the admin panel",
-    "Changing the admin panel UI or table columns",
-    "Migrating from hash-based routing to a full React Router DOM path-based setup",
-    "Any changes to the public-facing sections of the site"
+    "Adding new admin features or UI pages.",
+    "Changing the two-step authentication flow (Internet Identity + password gate).",
+    "Modifying the booking or registration data schema."
   ],
   "imageRequirements": {
     "required": [],

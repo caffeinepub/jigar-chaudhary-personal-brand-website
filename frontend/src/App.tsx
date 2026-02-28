@@ -10,44 +10,48 @@ import CTABanner from './components/CTABanner';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import AdminPanel from './components/AdminPanel';
+import RegisterPage from './components/RegisterPage';
 
-function getIsAdminRoute(): boolean {
+type Route = 'main' | 'admin' | 'register';
+
+function getCurrentRoute(): Route {
   const hash = window.location.hash;
   const pathname = window.location.pathname;
 
-  // Check pathname-based routing
-  if (pathname === '/admin') return true;
-
-  // Parse the hash: strip the leading '#', then get the path portion
-  // before any '?' or additional params
-  // Handles: #/admin, #/admin?foo=bar, #/admin/
-  if (hash.startsWith('#/admin')) return true;
-
-  // Also handle hash like #/admin with query string inside hash
+  // Admin route
+  if (pathname === '/admin') return 'admin';
+  if (hash.startsWith('#/admin')) return 'admin';
   const hashPath = hash.replace(/^#/, '').split('?')[0];
-  if (hashPath === '/admin' || hashPath === '/admin/') return true;
+  if (hashPath === '/admin' || hashPath === '/admin/') return 'admin';
 
-  return false;
+  // Register route
+  if (hash.startsWith('#/register')) return 'register';
+  if (hashPath === '/register' || hashPath === '/register/') return 'register';
+
+  return 'main';
 }
 
 export default function App() {
-  const [isAdmin, setIsAdmin] = useState(getIsAdminRoute);
+  const [route, setRoute] = useState<Route>(getCurrentRoute);
 
   useEffect(() => {
-    const handleHashChange = () => setIsAdmin(getIsAdminRoute());
-    const handlePopState = () => setIsAdmin(getIsAdminRoute());
+    const handleRouteChange = () => setRoute(getCurrentRoute());
 
-    window.addEventListener('hashchange', handleHashChange);
-    window.addEventListener('popstate', handlePopState);
+    window.addEventListener('hashchange', handleRouteChange);
+    window.addEventListener('popstate', handleRouteChange);
 
     return () => {
-      window.removeEventListener('hashchange', handleHashChange);
-      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('hashchange', handleRouteChange);
+      window.removeEventListener('popstate', handleRouteChange);
     };
   }, []);
 
-  if (isAdmin) {
+  if (route === 'admin') {
     return <AdminPanel />;
+  }
+
+  if (route === 'register') {
+    return <RegisterPage />;
   }
 
   return (

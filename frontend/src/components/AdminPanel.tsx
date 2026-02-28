@@ -1,266 +1,426 @@
-import { useState } from 'react';
-import { RefreshCw, Trash2, Loader2, Inbox, AlertCircle, ArrowLeft } from 'lucide-react';
-import { useGetAllSubmissions, useDeleteSubmission } from '../hooks/useQueries';
-import type { Submission } from '../backend';
+import React, { useState, useEffect } from 'react';
+import { Trash2, RefreshCw, Lock, Eye, EyeOff, Users, BookOpen, LogIn, LogOut, Loader2 } from 'lucide-react';
+import { useGetAllSubmissions, useDeleteSubmission, useGetAllRegistrations, useDeleteRegistration } from '../hooks/useQueries';
+import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { useQueryClient } from '@tanstack/react-query';
+import { useActor } from '../hooks/useActor';
 
-function formatTimestamp(ts: bigint): string {
-  if (ts === 0n) return '—';
-  // ICP timestamps are in nanoseconds
-  const ms = Number(ts / 1_000_000n);
-  const date = new Date(ms);
-  return date.toLocaleString('en-IN', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  });
-}
+const ADMIN_PASSWORD = 'Jigar@2025';
 
-function SubmissionCard({ submission, onDelete, isDeleting }: {
-  submission: Submission;
-  onDelete: (id: bigint) => void;
-  isDeleting: boolean;
-}) {
+function LoginStep({ onLoggedIn }: { onLoggedIn: () => void }) {
+  const { login, loginStatus, identity } = useInternetIdentity();
+  const isLoggingIn = loginStatus === 'logging-in';
+
+  useEffect(() => {
+    if (identity) {
+      onLoggedIn();
+    }
+  }, [identity, onLoggedIn]);
+
   return (
-    <div className="bg-[#1a1a1a] border border-white/8 rounded-sm p-5 flex flex-col gap-3">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="font-body font-semibold text-white text-base">{submission.name || '—'}</p>
-          <p className="font-body text-xs text-[#FF6B35] mt-0.5">{submission.eventType || '—'}</p>
+    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4">
+      <div className="bg-[#111] border border-[#222] rounded-2xl p-8 w-full max-w-md">
+        <div className="flex flex-col items-center mb-8">
+          <div className="w-16 h-16 rounded-full bg-orange-500/10 flex items-center justify-center mb-4">
+            <LogIn className="w-8 h-8 text-orange-500" />
+          </div>
+          <h1 className="text-2xl font-bold text-white">Admin Login</h1>
+          <p className="text-gray-400 text-sm mt-1 text-center">Sign in with your identity to access the admin panel</p>
         </div>
         <button
-          onClick={() => onDelete(submission.id)}
-          disabled={isDeleting}
-          className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-sm bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 hover:border-red-500/40 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label="Delete submission"
+          onClick={() => login()}
+          disabled={isLoggingIn}
+          className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
         >
-          {isDeleting ? (
-            <Loader2 size={14} className="text-red-400 animate-spin" />
+          {isLoggingIn ? (
+            <>
+              <Loader2 className="w-5 h-5 animate-spin" />
+              Signing in...
+            </>
           ) : (
-            <Trash2 size={14} className="text-red-400" />
+            <>
+              <LogIn className="w-5 h-5" />
+              Sign In
+            </>
           )}
         </button>
       </div>
+    </div>
+  );
+}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm font-body">
-        <div>
-          <span className="text-[#888] text-xs uppercase tracking-wide">Email</span>
-          <p className="text-white/80 mt-0.5 break-all">{submission.email || '—'}</p>
+function PasswordGate({ onAuthenticated }: { onAuthenticated: () => void }) {
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [isChecking, setIsChecking] = useState(false);
+
+  const handleSubmit = () => {
+    if (!password) return;
+    setIsChecking(true);
+    setError('');
+    setTimeout(() => {
+      if (password === ADMIN_PASSWORD) {
+        onAuthenticated();
+      } else {
+        setError('Incorrect password. Please try again.');
+        setIsChecking(false);
+      }
+    }, 400);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') handleSubmit();
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4">
+      <div className="bg-[#111] border border-[#222] rounded-2xl p-8 w-full max-w-md">
+        <div className="flex flex-col items-center mb-8">
+          <div className="w-16 h-16 rounded-full bg-orange-500/10 flex items-center justify-center mb-4">
+            <Lock className="w-8 h-8 text-orange-500" />
+          </div>
+          <h1 className="text-2xl font-bold text-white">Admin Access</h1>
+          <p className="text-gray-400 text-sm mt-1">Enter password to continue</p>
         </div>
-        <div>
-          <span className="text-[#888] text-xs uppercase tracking-wide">Phone</span>
-          <p className="text-white/80 mt-0.5">{submission.phone || '—'}</p>
-        </div>
-        <div>
-          <span className="text-[#888] text-xs uppercase tracking-wide">Organization</span>
-          <p className="text-white/80 mt-0.5">{submission.organization || '—'}</p>
-        </div>
-        <div>
-          <span className="text-[#888] text-xs uppercase tracking-wide">Received</span>
-          <p className="text-white/80 mt-0.5">{formatTimestamp(submission.timestamp)}</p>
+        <div className="space-y-4">
+          <div className="relative">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Enter admin password"
+              autoFocus
+              className="w-full bg-[#1a1a1a] border border-[#333] rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 pr-12"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+            >
+              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </button>
+          </div>
+          {error && <p className="text-red-400 text-sm">{error}</p>}
+          <button
+            onClick={handleSubmit}
+            disabled={isChecking || !password}
+            className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-semibold py-3 rounded-xl transition-colors"
+          >
+            {isChecking ? 'Verifying...' : 'Access Admin Panel'}
+          </button>
         </div>
       </div>
+    </div>
+  );
+}
 
-      {submission.message && (
-        <div>
-          <span className="text-[#888] text-xs uppercase tracking-wide font-body">Message</span>
-          <p className="text-white/70 text-sm font-body mt-1 leading-relaxed">{submission.message}</p>
+function BookingsTab({ isAuthenticated }: { isAuthenticated: boolean }) {
+  const { data: submissions, isLoading, error, refetch } = useGetAllSubmissions({ enabled: isAuthenticated });
+  const deleteSubmission = useDeleteSubmission();
+
+  const handleDelete = async (id: bigint) => {
+    if (confirm('Are you sure you want to delete this submission?')) {
+      await deleteSubmission.mutateAsync(id);
+    }
+  };
+
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-red-400 mb-2">Failed to load bookings.</p>
+        <p className="text-gray-500 text-sm mb-4">An error occurred while fetching data. Please try again.</p>
+        <button onClick={() => refetch()} className="text-orange-500 hover:text-orange-400 text-sm underline">Try again</button>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-bold text-white">Booking Submissions ({submissions?.length ?? 0})</h2>
+        <button onClick={() => refetch()} className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+          <RefreshCw className="w-4 h-4" />
+          Refresh
+        </button>
+      </div>
+      {isLoading ? (
+        <div className="flex items-center justify-center py-12 gap-3 text-gray-400">
+          <Loader2 className="w-5 h-5 animate-spin" />
+          Loading submissions...
         </div>
+      ) : submissions?.length === 0 ? (
+        <div className="text-center py-12 text-gray-400">No submissions yet.</div>
+      ) : (
+        <>
+          {/* Desktop Table */}
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[#222]">
+                  <th className="text-left py-3 px-4 text-gray-400 font-medium">Name</th>
+                  <th className="text-left py-3 px-4 text-gray-400 font-medium">Email</th>
+                  <th className="text-left py-3 px-4 text-gray-400 font-medium">Phone</th>
+                  <th className="text-left py-3 px-4 text-gray-400 font-medium">Organization</th>
+                  <th className="text-left py-3 px-4 text-gray-400 font-medium">Event Type</th>
+                  <th className="text-left py-3 px-4 text-gray-400 font-medium">Date</th>
+                  <th className="text-left py-3 px-4 text-gray-400 font-medium">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {submissions?.map((s) => (
+                  <tr key={s.id.toString()} className="border-b border-[#1a1a1a] hover:bg-[#1a1a1a] transition-colors">
+                    <td className="py-3 px-4 text-white">{s.name}</td>
+                    <td className="py-3 px-4 text-gray-300">{s.email}</td>
+                    <td className="py-3 px-4 text-gray-300">{s.phone}</td>
+                    <td className="py-3 px-4 text-gray-300">{s.organization}</td>
+                    <td className="py-3 px-4 text-gray-300">{s.eventType}</td>
+                    <td className="py-3 px-4 text-gray-400">{new Date(Number(s.timestamp) / 1_000_000).toLocaleDateString()}</td>
+                    <td className="py-3 px-4">
+                      <button
+                        onClick={() => handleDelete(s.id)}
+                        disabled={deleteSubmission.isPending}
+                        className="text-red-400 hover:text-red-300 transition-colors disabled:opacity-50"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {/* Mobile Cards */}
+          <div className="md:hidden space-y-4">
+            {submissions?.map((s) => (
+              <div key={s.id.toString()} className="bg-[#1a1a1a] rounded-xl p-4 space-y-2">
+                <div className="flex justify-between items-start">
+                  <span className="font-semibold text-white">{s.name}</span>
+                  <button onClick={() => handleDelete(s.id)} disabled={deleteSubmission.isPending} className="text-red-400 hover:text-red-300 disabled:opacity-50">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <p className="text-gray-300 text-sm">{s.email}</p>
+                <p className="text-gray-300 text-sm">{s.phone}</p>
+                <p className="text-gray-400 text-sm">{s.organization} · {s.eventType}</p>
+                <p className="text-gray-500 text-xs">{new Date(Number(s.timestamp) / 1_000_000).toLocaleDateString()}</p>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
 }
 
-export default function AdminPanel() {
-  const { data: submissions, isLoading, isError, refetch, isFetching } = useGetAllSubmissions();
-  const deleteSubmission = useDeleteSubmission();
-  const [deletingId, setDeletingId] = useState<bigint | null>(null);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
+function RegistrationsTab({ isAuthenticated }: { isAuthenticated: boolean }) {
+  const { data: registrations, isLoading, error, refetch } = useGetAllRegistrations({ enabled: isAuthenticated });
+  const deleteRegistration = useDeleteRegistration();
 
   const handleDelete = async (id: bigint) => {
-    setDeletingId(id);
-    setDeleteError(null);
-    try {
-      await deleteSubmission.mutateAsync(id);
-    } catch {
-      setDeleteError(`Failed to delete submission #${id}. Please try again.`);
-    } finally {
-      setDeletingId(null);
+    if (confirm('Are you sure you want to delete this registration?')) {
+      await deleteRegistration.mutateAsync(id);
     }
   };
 
-  // Filter out the empty placeholder submission (id=0, name='', email='')
-  const realSubmissions = (submissions ?? []).filter(
-    (s) => !(s.name === '' && s.email === '')
-  );
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-red-400 mb-2">Failed to load registrations.</p>
+        <p className="text-gray-500 text-sm mb-4">An error occurred while fetching data. Please try again.</p>
+        <button onClick={() => refetch()} className="text-orange-500 hover:text-orange-400 text-sm underline">Try again</button>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-[#111111] text-white font-body">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-[#111111]/95 backdrop-blur border-b border-white/8">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <a
-              href="/"
-              className="flex items-center gap-1.5 text-[#888] hover:text-white transition-colors duration-200 text-sm"
-            >
-              <ArrowLeft size={16} />
-              <span>Back to site</span>
-            </a>
-            <span className="text-white/20">|</span>
-            <h1 className="font-display text-2xl text-white tracking-wide">
-              Booking <span className="text-[#FF6B35]">Submissions</span>
-            </h1>
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-bold text-white">Event Registrations ({registrations?.length ?? 0})</h2>
+        <button onClick={() => refetch()} className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+          <RefreshCw className="w-4 h-4" />
+          Refresh
+        </button>
+      </div>
+      {isLoading ? (
+        <div className="flex items-center justify-center py-12 gap-3 text-gray-400">
+          <Loader2 className="w-5 h-5 animate-spin" />
+          Loading registrations...
+        </div>
+      ) : registrations?.length === 0 ? (
+        <div className="text-center py-12 text-gray-400">No registrations yet.</div>
+      ) : (
+        <>
+          {/* Desktop Table */}
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[#222]">
+                  <th className="text-left py-3 px-4 text-gray-400 font-medium">Name</th>
+                  <th className="text-left py-3 px-4 text-gray-400 font-medium">Email</th>
+                  <th className="text-left py-3 px-4 text-gray-400 font-medium">Phone</th>
+                  <th className="text-left py-3 px-4 text-gray-400 font-medium">College/Profession</th>
+                  <th className="text-left py-3 px-4 text-gray-400 font-medium">Date</th>
+                  <th className="text-left py-3 px-4 text-gray-400 font-medium">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {registrations?.map((r) => (
+                  <tr key={r.id.toString()} className="border-b border-[#1a1a1a] hover:bg-[#1a1a1a] transition-colors">
+                    <td className="py-3 px-4 text-white">{r.name}</td>
+                    <td className="py-3 px-4 text-gray-300">{r.email}</td>
+                    <td className="py-3 px-4 text-gray-300">{r.phone}</td>
+                    <td className="py-3 px-4 text-gray-300">{r.collegeProfession}</td>
+                    <td className="py-3 px-4 text-gray-400">{new Date(Number(r.timestamp) / 1_000_000).toLocaleDateString()}</td>
+                    <td className="py-3 px-4">
+                      <button
+                        onClick={() => handleDelete(r.id)}
+                        disabled={deleteRegistration.isPending}
+                        className="text-red-400 hover:text-red-300 transition-colors disabled:opacity-50"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
+          {/* Mobile Cards */}
+          <div className="md:hidden space-y-4">
+            {registrations?.map((r) => (
+              <div key={r.id.toString()} className="bg-[#1a1a1a] rounded-xl p-4 space-y-2">
+                <div className="flex justify-between items-start">
+                  <span className="font-semibold text-white">{r.name}</span>
+                  <button onClick={() => handleDelete(r.id)} disabled={deleteRegistration.isPending} className="text-red-400 hover:text-red-300 disabled:opacity-50">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <p className="text-gray-300 text-sm">{r.email}</p>
+                <p className="text-gray-300 text-sm">{r.phone}</p>
+                <p className="text-gray-400 text-sm">{r.collegeProfession}</p>
+                <p className="text-gray-500 text-xs">{new Date(Number(r.timestamp) / 1_000_000).toLocaleDateString()}</p>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
+type AdminStep = 'login' | 'password' | 'panel';
+
+// Waiting screen shown while the authenticated actor is being initialized
+function ActorLoadingScreen() {
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4">
+      <div className="bg-[#111] border border-[#222] rounded-2xl p-8 w-full max-w-md text-center">
+        <Loader2 className="w-10 h-10 animate-spin text-orange-500 mx-auto mb-4" />
+        <h2 className="text-white font-semibold text-lg">Initializing secure session…</h2>
+        <p className="text-gray-400 text-sm mt-2">Setting up your authenticated connection. This only takes a moment.</p>
+      </div>
+    </div>
+  );
+}
+
+export default function AdminPanel() {
+  const [step, setStep] = useState<AdminStep>('login');
+  const [activeTab, setActiveTab] = useState<'bookings' | 'registrations'>('bookings');
+  const { identity, clear } = useInternetIdentity();
+  const { isFetching: actorFetching } = useActor();
+  const queryClient = useQueryClient();
+
+  // If identity is already available on mount, skip login step
+  useEffect(() => {
+    if (identity && step === 'login') {
+      setStep('password');
+    }
+  }, [identity, step]);
+
+  // When transitioning to the panel, clear any stale/errored query cache
+  // so queries fire fresh with the authenticated actor
+  const handleEnterPanel = () => {
+    queryClient.removeQueries({ queryKey: ['submissions'] });
+    queryClient.removeQueries({ queryKey: ['registrations'] });
+    setStep('panel');
+  };
+
+  const handleLogout = async () => {
+    await clear();
+    queryClient.clear();
+    setStep('login');
+  };
+
+  // isAuthenticated means: logged in with II AND passed the password gate AND actor is ready
+  const isAuthenticated = !!identity && step === 'panel' && !actorFetching;
+
+  if (step === 'login') {
+    return <LoginStep onLoggedIn={() => setStep('password')} />;
+  }
+
+  if (step === 'password') {
+    return <PasswordGate onAuthenticated={handleEnterPanel} />;
+  }
+
+  // Show a loading screen while the authenticated actor is being built
+  // (isFetching is true right after identity becomes available)
+  if (actorFetching) {
+    return <ActorLoadingScreen />;
+  }
+
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] p-4 md:p-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-white">Admin Panel</h1>
+            <p className="text-gray-400 mt-1">Manage bookings and registrations</p>
+          </div>
           <button
-            onClick={() => refetch()}
-            disabled={isFetching}
-            className="flex items-center gap-2 px-4 py-2 rounded-sm bg-[#FF6B35]/10 border border-[#FF6B35]/30 text-[#FF6B35] text-sm font-semibold hover:bg-[#FF6B35]/20 hover:border-[#FF6B35]/60 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleLogout}
+            className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm"
           >
-            <RefreshCw size={14} className={isFetching ? 'animate-spin' : ''} />
-            Refresh
+            <LogOut className="w-4 h-4" />
+            Logout
           </button>
         </div>
-      </header>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
-        {/* Stats bar */}
-        {!isLoading && !isError && (
-          <div className="mb-6 flex items-center gap-3">
-            <div className="bg-[#1a1a1a] border border-white/8 rounded-sm px-4 py-2 inline-flex items-center gap-2">
-              <span className="text-[#FF6B35] font-semibold text-lg">{realSubmissions.length}</span>
-              <span className="text-[#888] text-sm">
-                {realSubmissions.length === 1 ? 'submission' : 'submissions'} total
-              </span>
-            </div>
-          </div>
-        )}
+        {/* Tabs */}
+        <div className="flex gap-2 mb-8 border-b border-[#222]">
+          <button
+            onClick={() => setActiveTab('bookings')}
+            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
+              activeTab === 'bookings'
+                ? 'border-orange-500 text-orange-500'
+                : 'border-transparent text-gray-400 hover:text-white'
+            }`}
+          >
+            <BookOpen className="w-4 h-4" />
+            Bookings
+          </button>
+          <button
+            onClick={() => setActiveTab('registrations')}
+            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
+              activeTab === 'registrations'
+                ? 'border-orange-500 text-orange-500'
+                : 'border-transparent text-gray-400 hover:text-white'
+            }`}
+          >
+            <Users className="w-4 h-4" />
+            Registrations
+          </button>
+        </div>
 
-        {/* Delete error */}
-        {deleteError && (
-          <div className="mb-4 flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-sm px-4 py-3 text-red-400 text-sm">
-            <AlertCircle size={16} className="flex-shrink-0" />
-            {deleteError}
-          </div>
-        )}
-
-        {/* Loading state */}
-        {isLoading && (
-          <div className="flex flex-col items-center justify-center py-24 gap-4">
-            <Loader2 size={36} className="text-[#FF6B35] animate-spin" />
-            <p className="text-[#888] text-sm">Loading submissions...</p>
-          </div>
-        )}
-
-        {/* Error state */}
-        {isError && !isLoading && (
-          <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">
-            <AlertCircle size={36} className="text-red-400" />
-            <p className="text-white font-semibold">Failed to load submissions</p>
-            <p className="text-[#888] text-sm">Please try refreshing the page.</p>
-            <button
-              onClick={() => refetch()}
-              className="mt-2 px-4 py-2 rounded-sm bg-[#FF6B35]/10 border border-[#FF6B35]/30 text-[#FF6B35] text-sm hover:bg-[#FF6B35]/20 transition-all duration-200"
-            >
-              Try again
-            </button>
-          </div>
-        )}
-
-        {/* Empty state */}
-        {!isLoading && !isError && realSubmissions.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">
-            <Inbox size={48} className="text-[#444]" />
-            <p className="text-white font-semibold text-lg">No booking submissions yet</p>
-            <p className="text-[#888] text-sm max-w-xs">
-              When someone fills out the "Book Jigar Now" form, their details will appear here.
-            </p>
-          </div>
-        )}
-
-        {/* Submissions list */}
-        {!isLoading && !isError && realSubmissions.length > 0 && (
-          <>
-            {/* Desktop table */}
-            <div className="hidden md:block overflow-x-auto rounded-sm border border-white/8">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-[#1a1a1a] border-b border-white/8">
-                    <th className="text-left px-4 py-3 text-[#888] text-xs uppercase tracking-wide font-semibold">#</th>
-                    <th className="text-left px-4 py-3 text-[#888] text-xs uppercase tracking-wide font-semibold">Name</th>
-                    <th className="text-left px-4 py-3 text-[#888] text-xs uppercase tracking-wide font-semibold">Email</th>
-                    <th className="text-left px-4 py-3 text-[#888] text-xs uppercase tracking-wide font-semibold">Phone</th>
-                    <th className="text-left px-4 py-3 text-[#888] text-xs uppercase tracking-wide font-semibold">Organization</th>
-                    <th className="text-left px-4 py-3 text-[#888] text-xs uppercase tracking-wide font-semibold">Event Type</th>
-                    <th className="text-left px-4 py-3 text-[#888] text-xs uppercase tracking-wide font-semibold">Message</th>
-                    <th className="text-left px-4 py-3 text-[#888] text-xs uppercase tracking-wide font-semibold">Date</th>
-                    <th className="px-4 py-3"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {realSubmissions.map((sub, idx) => (
-                    <tr
-                      key={String(sub.id)}
-                      className="border-b border-white/5 hover:bg-white/3 transition-colors duration-150"
-                    >
-                      <td className="px-4 py-3 text-[#555] text-xs">{idx + 1}</td>
-                      <td className="px-4 py-3 text-white font-medium whitespace-nowrap">{sub.name || '—'}</td>
-                      <td className="px-4 py-3 text-white/70 max-w-[160px] truncate">{sub.email || '—'}</td>
-                      <td className="px-4 py-3 text-white/70 whitespace-nowrap">{sub.phone || '—'}</td>
-                      <td className="px-4 py-3 text-white/70 max-w-[140px] truncate">{sub.organization || '—'}</td>
-                      <td className="px-4 py-3">
-                        <span className="inline-block px-2 py-0.5 rounded-sm bg-[#FF6B35]/10 text-[#FF6B35] text-xs font-medium whitespace-nowrap">
-                          {sub.eventType || '—'}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-white/60 max-w-[200px]">
-                        <span className="line-clamp-2 text-xs leading-relaxed">{sub.message || '—'}</span>
-                      </td>
-                      <td className="px-4 py-3 text-[#666] text-xs whitespace-nowrap">{formatTimestamp(sub.timestamp)}</td>
-                      <td className="px-4 py-3">
-                        <button
-                          onClick={() => handleDelete(sub.id)}
-                          disabled={deletingId === sub.id}
-                          className="w-8 h-8 flex items-center justify-center rounded-sm bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 hover:border-red-500/40 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                          aria-label="Delete"
-                        >
-                          {deletingId === sub.id ? (
-                            <Loader2 size={13} className="text-red-400 animate-spin" />
-                          ) : (
-                            <Trash2 size={13} className="text-red-400" />
-                          )}
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Mobile cards */}
-            <div className="md:hidden flex flex-col gap-4">
-              {realSubmissions.map((sub) => (
-                <SubmissionCard
-                  key={String(sub.id)}
-                  submission={sub}
-                  onDelete={handleDelete}
-                  isDeleting={deletingId === sub.id}
-                />
-              ))}
-            </div>
-          </>
-        )}
-      </main>
-
-      {/* Footer */}
-      <footer className="border-t border-white/8 mt-12 py-6 text-center">
-        <p className="text-[#555] text-xs font-body">
-          Jigar Chaudhary Admin Panel · {new Date().getFullYear()}
-        </p>
-      </footer>
+        {/* Tab Content */}
+        <div className="bg-[#111] border border-[#222] rounded-2xl p-6">
+          {activeTab === 'bookings'
+            ? <BookingsTab isAuthenticated={isAuthenticated} />
+            : <RegistrationsTab isAuthenticated={isAuthenticated} />
+          }
+        </div>
+      </div>
     </div>
   );
 }

@@ -15,7 +15,6 @@ export default function Navigation() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Trigger entrance animation after mount
     const t = setTimeout(() => setMounted(true), 50);
     return () => clearTimeout(t);
   }, []);
@@ -40,6 +39,11 @@ export default function Navigation() {
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const handleRegisterClick = () => {
+    setMobileOpen(false);
+    window.location.hash = '#/register';
   };
 
   return (
@@ -67,7 +71,7 @@ export default function Navigation() {
           </button>
 
           {/* Desktop Nav Links */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6 lg:gap-8">
             {navLinks.map((link) => (
               <button
                 key={link.label}
@@ -78,6 +82,15 @@ export default function Navigation() {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-orange group-hover:w-full transition-all duration-300" />
               </button>
             ))}
+
+            {/* Live Session link */}
+            <button
+              onClick={handleRegisterClick}
+              className="font-body text-sm font-semibold text-brand-gold border border-brand-gold/40 px-4 py-1.5 rounded-full hover:bg-brand-gold/10 hover:border-brand-gold/70 transition-all duration-200 tracking-wide flex items-center gap-1.5"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse" />
+              Live Session
+            </button>
           </div>
 
           {/* Book Now CTA */}
@@ -123,11 +136,27 @@ export default function Navigation() {
               {link.label}
             </button>
           ))}
+
+          {/* Live Session mobile link */}
           <button
-            onClick={() => handleNavClick('#contact')}
-            className="mt-4 font-body font-semibold bg-brand-orange text-white px-8 py-3 rounded-sm text-lg tracking-wide hover:bg-brand-orange/90 transition-colors duration-200"
+            onClick={handleRegisterClick}
+            className="font-body font-semibold text-brand-gold border border-brand-gold/50 px-6 py-2.5 rounded-full text-lg tracking-wide hover:bg-brand-gold/10 transition-colors duration-200 flex items-center gap-2"
             style={{
               transitionDelay: mobileOpen ? `${navLinks.length * 60}ms` : '0ms',
+              transform: mobileOpen ? 'translateY(0)' : 'translateY(16px)',
+              opacity: mobileOpen ? 1 : 0,
+              transition: 'transform 0.3s ease, opacity 0.3s ease',
+            }}
+          >
+            <span className="w-2 h-2 rounded-full bg-brand-gold animate-pulse" />
+            LIVE SESSION
+          </button>
+
+          <button
+            onClick={() => handleNavClick('#contact')}
+            className="mt-2 font-body font-semibold bg-brand-orange text-white px-8 py-3 rounded-sm text-lg tracking-wide hover:bg-brand-orange/90 transition-colors duration-200"
+            style={{
+              transitionDelay: mobileOpen ? `${(navLinks.length + 1) * 60}ms` : '0ms',
               transform: mobileOpen ? 'translateY(0)' : 'translateY(16px)',
               opacity: mobileOpen ? 1 : 0,
               transition: 'transform 0.3s ease, opacity 0.3s ease, background-color 0.2s ease',

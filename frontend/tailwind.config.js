@@ -1,123 +1,93 @@
-import typography from '@tailwindcss/typography';
-import containerQueries from '@tailwindcss/container-queries';
-import animate from 'tailwindcss-animate';
-
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ['class'],
-  content: ['index.html', 'src/**/*.{js,ts,jsx,tsx,html,css}'],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    container: {
-      center: true,
-      padding: '2rem',
-      screens: {
-        '2xl': '1400px'
-      }
-    },
     extend: {
       colors: {
-        border: 'oklch(var(--border))',
-        input: 'oklch(var(--input))',
-        ring: 'oklch(var(--ring) / <alpha-value>)',
-        background: 'oklch(var(--background))',
-        foreground: 'oklch(var(--foreground))',
+        // Brand tokens
+        'brand-dark': 'oklch(0.12 0.01 260)',
+        'brand-light': 'oklch(0.96 0.005 260)',
+        'brand-muted': 'oklch(0.60 0.01 260)',
+        'brand-orange': '#FF6B00',
+        'brand-gold': '#F5A623',
+        'brand-green': 'oklch(0.65 0.18 145)',
+
+        // Register page tokens
+        'reg-dark': 'var(--reg-dark)',
+        'reg-navy': 'var(--reg-navy)',
+        'reg-card': 'var(--reg-card)',
+        'reg-gold': 'var(--reg-gold)',
+        'reg-muted': 'var(--reg-muted)',
+
+        // Shadcn tokens
+        background: 'oklch(var(--background) / <alpha-value>)',
+        foreground: 'oklch(var(--foreground) / <alpha-value>)',
+        card: {
+          DEFAULT: 'oklch(var(--card) / <alpha-value>)',
+          foreground: 'oklch(var(--card-foreground) / <alpha-value>)',
+        },
+        popover: {
+          DEFAULT: 'oklch(var(--popover) / <alpha-value>)',
+          foreground: 'oklch(var(--popover-foreground) / <alpha-value>)',
+        },
         primary: {
           DEFAULT: 'oklch(var(--primary) / <alpha-value>)',
-          foreground: 'oklch(var(--primary-foreground))'
+          foreground: 'oklch(var(--primary-foreground) / <alpha-value>)',
         },
         secondary: {
           DEFAULT: 'oklch(var(--secondary) / <alpha-value>)',
-          foreground: 'oklch(var(--secondary-foreground))'
-        },
-        destructive: {
-          DEFAULT: 'oklch(var(--destructive) / <alpha-value>)',
-          foreground: 'oklch(var(--destructive-foreground))'
+          foreground: 'oklch(var(--secondary-foreground) / <alpha-value>)',
         },
         muted: {
           DEFAULT: 'oklch(var(--muted) / <alpha-value>)',
-          foreground: 'oklch(var(--muted-foreground) / <alpha-value>)'
+          foreground: 'oklch(var(--muted-foreground) / <alpha-value>)',
         },
         accent: {
           DEFAULT: 'oklch(var(--accent) / <alpha-value>)',
-          foreground: 'oklch(var(--accent-foreground))'
+          foreground: 'oklch(var(--accent-foreground) / <alpha-value>)',
         },
-        popover: {
-          DEFAULT: 'oklch(var(--popover))',
-          foreground: 'oklch(var(--popover-foreground))'
+        destructive: {
+          DEFAULT: 'oklch(var(--destructive) / <alpha-value>)',
+          foreground: 'oklch(var(--destructive-foreground) / <alpha-value>)',
         },
-        card: {
-          DEFAULT: 'oklch(var(--card))',
-          foreground: 'oklch(var(--card-foreground))'
-        },
-        chart: {
-          1: 'oklch(var(--chart-1))',
-          2: 'oklch(var(--chart-2))',
-          3: 'oklch(var(--chart-3))',
-          4: 'oklch(var(--chart-4))',
-          5: 'oklch(var(--chart-5))'
-        },
-        sidebar: {
-          DEFAULT: 'oklch(var(--sidebar))',
-          foreground: 'oklch(var(--sidebar-foreground))',
-          primary: 'oklch(var(--sidebar-primary))',
-          'primary-foreground': 'oklch(var(--sidebar-primary-foreground))',
-          accent: 'oklch(var(--sidebar-accent))',
-          'accent-foreground': 'oklch(var(--sidebar-accent-foreground))',
-          border: 'oklch(var(--sidebar-border))',
-          ring: 'oklch(var(--sidebar-ring))'
-        },
-        // Brand colors
-        'brand-dark': '#0A0A0A',
-        'brand-dark-alt': '#111111',
-        'brand-dark-card': '#1A1A1A',
-        'brand-orange': '#FF6B00',
-        'brand-gold': '#F5A623',
-        'brand-light': '#F0F0F0',
-        'brand-muted': '#888888',
-        'brand-green': '#25D366',
+        border: 'oklch(var(--border) / <alpha-value>)',
+        input: 'oklch(var(--input) / <alpha-value>)',
+        ring: 'oklch(var(--ring) / <alpha-value>)',
       },
       fontFamily: {
-        display: ['Bebas Neue', 'sans-serif'],
+        display: ['"Bebas Neue"', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
-        sans: ['Inter', 'sans-serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)'
+        sm: 'calc(var(--radius) - 4px)',
       },
       boxShadow: {
-        xs: '0 1px 2px 0 rgba(0,0,0,0.05)',
-        'orange-glow': '0 8px 32px rgba(255, 107, 0, 0.35), 0 2px 8px rgba(255, 107, 0, 0.2)',
-        'orange-glow-lg': '0 16px 48px rgba(255, 107, 0, 0.4), 0 4px 16px rgba(255, 107, 0, 0.25)',
-        'gold-glow': '0 8px 32px rgba(245, 166, 35, 0.3)',
-        'card-dark': '0 4px 24px rgba(0,0,0,0.5)',
-      },
-      keyframes: {
-        'accordion-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' }
-        },
-        'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' }
-        },
-        'pulse-orange': {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(255, 107, 0, 0.3)' },
-          '50%': { boxShadow: '0 0 40px rgba(255, 107, 0, 0.6)' },
-        },
-        'float': {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-10px)' },
-        }
+        'orange-glow': '0 0 20px rgba(255, 107, 0, 0.4)',
+        'gold-glow': '0 0 20px rgba(245, 166, 35, 0.4)',
       },
       animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
-        'pulse-orange': 'pulse-orange 2s ease-in-out infinite',
-        'float': 'float 3s ease-in-out infinite',
-      }
-    }
+        'fade-in': 'fadeIn 0.5s ease-out',
+        'slide-up': 'slideUp 0.5s ease-out',
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+    },
   },
-  plugins: [typography, containerQueries, animate]
+  plugins: [
+    require('tailwindcss-animate'),
+    require('@tailwindcss/typography'),
+    require('@tailwindcss/container-queries'),
+  ],
 };

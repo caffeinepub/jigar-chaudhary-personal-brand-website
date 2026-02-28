@@ -10,6 +10,15 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
+export type ExternalBlob = Uint8Array;
+export interface Registration {
+  'id' : bigint,
+  'collegeProfession' : string,
+  'name' : string,
+  'email' : string,
+  'timestamp' : bigint,
+  'phone' : string,
+}
 export interface Submission {
   'id' : bigint,
   'name' : string,
@@ -20,13 +29,56 @@ export interface Submission {
   'phone' : string,
   'eventType' : string,
 }
+export interface UserProfile { 'name' : string }
+export type UserRole = { 'admin' : null } |
+  { 'user' : null } |
+  { 'guest' : null };
+export interface _CaffeineStorageCreateCertificateResult {
+  'method' : string,
+  'blob_hash' : string,
+}
+export interface _CaffeineStorageRefillInformation {
+  'proposed_top_up_amount' : [] | [bigint],
+}
+export interface _CaffeineStorageRefillResult {
+  'success' : [] | [boolean],
+  'topped_up_amount' : [] | [bigint],
+}
 export interface _SERVICE {
-  'deleteSubmission' : ActorMethod<[bigint], undefined>,
-  'getAllSubmissions' : ActorMethod<[], Array<Submission>>,
+  '_caffeineStorageBlobIsLive' : ActorMethod<[Uint8Array], boolean>,
+  '_caffeineStorageBlobsToDelete' : ActorMethod<[], Array<Uint8Array>>,
+  '_caffeineStorageConfirmBlobDeletion' : ActorMethod<
+    [Array<Uint8Array>],
+    undefined
+  >,
+  '_caffeineStorageCreateCertificate' : ActorMethod<
+    [string],
+    _CaffeineStorageCreateCertificateResult
+  >,
+  '_caffeineStorageRefillCashier' : ActorMethod<
+    [[] | [_CaffeineStorageRefillInformation]],
+    _CaffeineStorageRefillResult
+  >,
+  '_caffeineStorageUpdateGatewayPrincipals' : ActorMethod<[], undefined>,
+  '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
+  'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'deleteBooking' : ActorMethod<[bigint], undefined>,
+  'deleteRegistration' : ActorMethod<[bigint], undefined>,
+  'getAllBookings' : ActorMethod<[], Array<Submission>>,
+  'getAllRegistrations' : ActorMethod<[], Array<Registration>>,
+  'getBooking' : ActorMethod<[bigint], [] | [Submission]>,
+  'getBookingImage' : ActorMethod<[bigint], [] | [ExternalBlob]>,
+  'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
+  'getCallerUserRole' : ActorMethod<[], UserRole>,
+  'getRegistration' : ActorMethod<[bigint], [] | [Registration]>,
+  'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  'isCallerAdmin' : ActorMethod<[], boolean>,
+  'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
   'submitBooking' : ActorMethod<
     [string, string, string, string, string, string],
     bigint
   >,
+  'submitRegistration' : ActorMethod<[string, string, string, string], bigint>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

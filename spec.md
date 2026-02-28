@@ -1,11 +1,12 @@
 # Specification
 
 ## Summary
-**Goal:** Fix the Admin Panel routing in `App.tsx` so it works with the deployed site's hash-based SPA navigation.
+**Goal:** Fix the admin panel so that authenticated Internet Identity principals are correctly used when fetching bookings and session registrations, eliminating the "account may not have admin permissions" error.
 
 **Planned changes:**
-- Update the routing logic in `App.tsx` to detect the `/admin` path within `window.location.hash` instead of `window.location.pathname`
-- Update existing hash-change and popstate event listeners to check for the `/admin` segment within the hash
-- Ensure the `caffeineAdminToken` hash parameter passthrough does not interfere with admin panel detection
+- Ensure the admin panel's data-fetching queries use the authenticated actor (carrying the logged-in Internet Identity principal) rather than the anonymous actor.
+- Disable admin queries until the authenticated actor is ready, preventing premature requests with an anonymous principal.
+- Automatically trigger admin queries once the actor transitions from anonymous to authenticated, without requiring a manual retry.
+- Ensure the backend `isAdmin` check correctly recognises the authenticated caller's principal.
 
-**User-visible outcome:** Navigating to `/#/admin` on the deployed site renders the AdminPanel component correctly, allowing the admin to view booking submissions without a blank screen or redirect.
+**User-visible outcome:** After completing both authentication steps (Internet Identity + password), the admin panel loads all bookings and session registrations successfully without displaying a permissions error.

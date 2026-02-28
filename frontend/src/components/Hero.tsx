@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Radio } from 'lucide-react';
 import CounterAnimation from './CounterAnimation';
 
 const stats = [
@@ -91,7 +91,7 @@ export default function Hero() {
 
           {/* CTA Buttons */}
           <div
-            className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-12"
+            className="flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-4 mb-12"
             style={{
               opacity: visible ? 1 : 0,
               transform: visible ? 'translateY(0)' : 'translateY(20px)',
@@ -110,6 +110,16 @@ export default function Hero() {
             >
               Explore Programs
             </button>
+            <a
+              href="/#/register"
+              className="inline-flex items-center justify-center gap-2 font-body font-semibold border-2 border-brand-gold text-brand-gold px-8 py-4 text-base tracking-wide hover:bg-brand-gold/10 transition-all duration-300 rounded-sm w-full sm:w-auto relative overflow-hidden group"
+            >
+              <span className="relative flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-brand-gold animate-pulse" />
+                <Radio size={16} className="text-brand-gold" />
+                Live Session
+              </span>
+            </a>
           </div>
 
           {/* Stats */}
